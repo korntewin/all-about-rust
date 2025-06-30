@@ -20,6 +20,8 @@ It's a quick and dirty load test to see which one performs better on my machine.
 ## LLM Model
 
 - **Model:** [Llama-3.2-3B-Instruct-Q8_0.gguf]
+  - Context size: 8,192 tokens
+  - Max output tokens: 50 tokens
 
 ## TL;DR
 
