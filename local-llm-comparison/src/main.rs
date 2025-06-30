@@ -15,7 +15,7 @@ const API_PATH: &str = "/v1/chat/completions";
 
 async fn setup_custom_client(user: &mut GooseUser) -> TransactionResult {
     let api_key = env::var("OPENAI_API_KEY").unwrap_or("".to_string());
-    let auth_header = format!("Bearer {}", api_key);
+    let auth_header = format!("Bearer {api_key}");
     let mut headers = header::HeaderMap::new();
     headers.insert(
         "Authorization",
@@ -89,9 +89,9 @@ async fn main() -> Result<(), GooseError> {
         println!("##################################################");
         println!("# Summary                                        #");
         println!("##################################################");
-        println!("Total completion tokens: {}", total_tokens);
-        println!("Total time: {:.2}s", total_time_in_secs);
-        println!("Tokens per second: {:.2}", tokens_per_sec);
+        println!("Total completion tokens: {total_tokens}");
+        println!("Total time: {total_time_in_secs:.2}s");
+        println!("Tokens per second: {tokens_per_sec:.2}");
         println!("##################################################");
     } else {
         println!("Not enough time elapsed to calculate tokens per second.");
