@@ -1,10 +1,10 @@
-# LlamaEdge vs. Ollama
+# Local LLM comparison (LlamaEdge vs Ollama vs LMStudio)
 
-Hey there! As I've been exploring running LLMs locally and found two interesting candidates:
+Hey there! As I've been exploring running LLMs locally and found three interesting candidates:
 
 1. [LlamaEdge]: Written in Rust and runs on a WebAssembly runtime. It's highly portable and offers near-native speed!
 2. [Ollama]: Written in Go, has a great user experience and an intuitive CLI.
-3. [LMStudio]: Written in Typescript, has the best UX and eas of useout of these three! 
+3. [LMStudio]: Written in Typescript, has the best UX and ease of use out of these three.
 
 This repository contains a simple benchmark to compare the performance for [LlamaEdge], [Ollama], and [LMStudio].
 It's a quick and dirty load test to see which one performs better on my machine.
@@ -21,11 +21,9 @@ It's a quick and dirty load test to see which one performs better on my machine.
 
 - **Model:** [Llama-3.2-3B-Instruct-Q8_0.gguf]
 
-## The Results!
+## TL;DR
 
 The results are interesting! For a single user, LMStudio comes out on top. However, as concurrency increases, Ollama takes the lead, demonstrating better scaling capabilities in this test.
-
-### TL;DR
 
 | Concurrent Users | Metric             | LlamaEdge | Ollama | LMStudio | LMStudio MLX | Winner      |
 | :--------------- | :----------------- | :-------- | :-------- | :--- | :--- |:---------- |
@@ -41,6 +39,41 @@ The results are interesting! For a single user, LMStudio comes out on top. Howev
 |                  | Avg Latency (ms)   | 2009      | 1381      | 1831 | 1757 | **Ollama**    |
 |                  | 99% Latency (ms)   | 3618      | 1,879      | 2000 | 1,988 | **Ollama**    |
 |                  | Tokens/s           | 75.01     | 117.22    | 82.27 | 88.33 | **Ollama**    |
+
+## Wanna Run It Yourself?
+
+This repo contains the code to run the benchmarks, which is very simple:
+
+```bash
+# on first terminal run
+just run-llamaedge-server
+# then on another terminal run
+just user_count=2 load-test-llamaedge
+```
+
+or 
+
+```bash
+# on first terminal run
+just run-ollama-server
+# then on another terminal run
+just user_count=2 load-test-ollama
+```
+
+or
+
+```bash
+# For LMStudio, the server must be run manually from LMStudio UI
+just user_count=3 load-test-lmstudio
+```
+
+**Requirements:**
+
+1. [Cargo]: For *Goose* load testing framework which is written in Rust.
+2. [Just]: Improved version of `Make` which is also written in Rust as well 😂.
+3. [LMStudio]: LMStudio is currently needed to be installed from official website, no CLI installation so far. After installation, we can easily spinup OpenAI API compatible server selecting `secondstate/Llama-3.2-3B-Instruct-GGUF/Llama-3.2-3B-Instruct-Q8_0.gguf` model.
+
+## The Results!
 
 Here's the full data from my runs.
 
@@ -463,39 +496,6 @@ Total time: 180.00s
 Tokens per second: 88.33
 ##################################################
 ```
-
-## Wanna Run It Yourself?
-
-This repo contains the code to run the benchmarks, which is very simple:
-
-```bash
-# on first terminal run
-just run-llamaedge-server
-# then on another terminal run
-just user_count=2 load-test-llamaedge
-```
-
-or 
-
-```bash
-# on first terminal run
-just run-ollama-server
-# then on another terminal run
-just user_count=2 load-test-ollama
-```
-
-or
-
-```bash
-# For LMStudio, the server must be run manually from LMStudio UI
-just user_count=3 load-test-lmstudio
-```
-
-**Requirements:**
-
-1. [Cargo]: For *Goose* load testing framework which is written in Rust.
-2. [Just]: Improved version of `Make` which is also written in Rust as well 😂.
-3. [LMStudio]: LMStudio is currently needed to be installed from official website, no CLI installation so far. After installation, we can easily spinup OpenAI API compatible server selecting `secondstate/Llama-3.2-3B-Instruct-GGUF/Llama-3.2-3B-Instruct-Q8_0.gguf` model.
 
 
 ---
