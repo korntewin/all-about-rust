@@ -49,11 +49,11 @@ async fn llamaedge_loadtest_task(user: &mut GooseUser) -> TransactionResult {
 
     let goose_response = user.post_json(API_PATH, &payload).await?;
 
-    if let Ok(reqwest_response) = goose_response.response {
-        if let Ok(response_json) = reqwest_response.json::<ChatResponse>().await {
-            let mut total_tokens = TOTAL_COMPLETION_TOKENS.lock().unwrap();
-            *total_tokens += response_json.usage.completion_tokens;
-        }
+    if let Ok(reqwest_response) = goose_response.response
+        && let Ok(response_json) = reqwest_response.json::<ChatResponse>().await
+    {
+        let mut total_tokens = TOTAL_COMPLETION_TOKENS.lock().unwrap();
+        *total_tokens += response_json.usage.completion_tokens;
     }
 
     Ok(())
